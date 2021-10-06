@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <title>Cadastro de Funcionário</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+      integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div
+      class="
+        d-flex
+        flex-column flex-md-row
+        align-items-center
+        p-3
+        px-md-4
+        mb-3
+        bg-white
+        border-bottom
+        shadow-sm
+      "
+    >
+      <h5 class="my-0 mr-md-auto font-weight-normal">Clínica RNM</h5>
+      <nav class="my-2 my-md-0 mr-md-3">
+        <a class="p-2 text-dark" href="/novo_funcionario/index.html"
+          >Novo Funcionário</a
+        >
+        <a class="p-2 text-dark" href="/novo_paciente/index.html"
+          >Novo Paciente</a
+        >
+        <a class="p-2 text-dark" href="/listagem_pacientes/index.html"
+          >Listar Pacientes</a
+        >
+        <a class="p-2 text-dark" href="/listagem_enderecos/index.html"
+          >Listar Endereços</a
+        >
+        <a class="p-2 text-dark" href="/listagem_agendamentos/index.html"
+          >Listar Agendamentos</a
+        >
+        <a class="p-2 text-dark" href="/listagem_meus_agendamentos/index.html"
+          >Listar Meus Agendamentos</a
+        >
+        <!-- só aparece para médicos-->
+      </nav>
+    </div>
+
+    <form>
+      <div class="form-group">
+        <label for="inputName">Nome</label>
+        <input
+          type="text"
+          class="form-control"
+          id="inputName"
+          placeholder="Digite o nome completo"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="inputSexo">Sexo</label>
+        <select id="inputSexo" class="form-control">
+          <option selected>Escolher...</option>
+          <option>Masculino</option>
+          <option>Feminino</option>
+          <option>Outro</option>
+          <option>Prefiro não informar</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="inputEmail">Email</label>
+        <input
+          type="email"
+          class="form-control"
+          id="inputEmail"
+          placeholder="Digite o email"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="inputTelefone">Telefone</label>
+        <input
+          type="tel"
+          class="form-control"
+          id="inputTelefone"
+          placeholder="Digite o telefone de contato"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="inputCep">CEP</label>
+        <input
+          type="text"
+          class="form-control"
+          id="inputCep"
+          placeholder="Digite o CEP"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="inputLogradouro">Logradouro</label>
+        <input
+          type="tel"
+          class="form-control"
+          id="inputLogradouro"
+          placeholder="Digite o endereço"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="inputCidade">Cidade</label>
+        <input
+          type="text"
+          class="form-control"
+          id="inputCidade"
+          placeholder="Digite a cidade"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="inputEstado">Estado</label>
+        <select id="inputEstado" class="form-control">
+          <option selected>Escolher...</option>
+          <option>Goiás</option>
+          <option>Minas Gerais</option>
+          <option>São Paulo</option>
+          <option>Rio de Janeiro</option>
+          <option>Bahia</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="inputDataInicio">Início do contrato</label>
+        <input type="date" class="form-control" id="inputDataInicio" />
+      </div>
+
+      <div class="form-group">
+        <label for="inputSalario">Salário</label>
+        <input
+          type="text"
+          class="form-control"
+          id="inputSalario"
+          placeholder="Digite o salário"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="inputSenha">Senha</label>
+        <input type="password" class="form-control" id="inputSenha" />
+      </div>
+
+      <div class="form-group form-check">
+        <input type="checkbox" class="form-check-input" id="isMedico" />
+        <label class="form-check-label" for="isMedico">Médico</label>
+      </div>
+
+      <div id="medicForms" style="display: none">
+        <div class="form-group">
+          <label for="inputEspecialidade">Especialidade</label>
+          <input
+            type="text"
+            class="form-control"
+            id="inputEspecialidade"
+            placeholder="Digite a especialidade"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="inputCrm">CRM</label>
+          <input
+            type="text"
+            class="form-control"
+            id="inputCrm"
+            placeholder="Digite o CRM"
+          />
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary">Enviar</button>
+    </form>
+  </body>
+
+  <script>
+    var checkboxMedico = document.getElementById("isMedico");
+    var medicForms = document.getElementById("medicForms");
+
+    function checkIsMedico() {
+      if (checkboxMedico.checked) {
+        medicForms.style["display"] = "";
+      } else {
+        medicForms.style["display"] = "none";
+      }
+    }
+
+    window.onload = () => {
+      checkboxMedico.addEventListener("click", checkIsMedico);
+    };
+  </script>
+</html>
