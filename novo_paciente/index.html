@@ -41,7 +41,7 @@
         <a class="p-2 text-dark" href="/listagem_pacientes/index.html"
           >Listar Pacientes</a
         >
-        <a class="p-2 text-dark" href="/listagem_enderecos/index.html"
+        <a class="p-2 text-dark" href="/listagem_enderecos/index.php"
           >Listar Endereços</a
         >
         <a class="p-2 text-dark" href="/listagem_agendamentos/index.html"
@@ -54,7 +54,7 @@
       </nav>
     </div>
 
-    <form action="/cadastro/cadastrar_paciente.php" method="POST">
+    <form action="/cadastro/cadastrar_funcionario.php" method="POST">
       <div class="form-group">
         <label for="inputName">Nome</label>
         <input
@@ -62,12 +62,13 @@
           class="form-control"
           id="inputName"
           placeholder="Digite o nome completo"
+          name="nome"
         />
       </div>
 
       <div class="form-group">
         <label for="inputSexo">Sexo</label>
-        <select id="inputSexo" class="form-control">
+        <select id="inputSexo" class="form-control" name="sexo">
           <option selected>Escolher...</option>
           <option>Masculino</option>
           <option>Feminino</option>
@@ -83,6 +84,7 @@
           class="form-control"
           id="inputEmail"
           placeholder="Digite o email"
+          name="email"
         />
       </div>
 
@@ -93,6 +95,7 @@
           class="form-control"
           id="inputTelefone"
           placeholder="Digite o telefone de contato"
+          name="telefone"
         />
       </div>
 
@@ -103,6 +106,7 @@
           class="form-control"
           id="inputCep"
           placeholder="Digite o CEP"
+          name="cep"
         />
       </div>
 
@@ -113,6 +117,7 @@
           class="form-control"
           id="inputLogradouro"
           placeholder="Digite o endereço"
+          name="logradouro"
         />
       </div>
 
@@ -123,12 +128,13 @@
           class="form-control"
           id="inputCidade"
           placeholder="Digite a cidade"
+          name="cidade"
         />
       </div>
 
       <div class="form-group">
         <label for="inputEstado">Estado</label>
-        <select id="inputEstado" class="form-control">
+        <select id="inputEstado" class="form-control" name="estado">
           <option selected>Escolher...</option>
           <option>Goiás</option>
           <option>Minas Gerais</option>
@@ -145,6 +151,7 @@
           class="form-control"
           id="inputPeso"
           placeholder="Peso (kg)"
+          name="peso"
         />
       </div>
 
@@ -155,12 +162,17 @@
           class="form-control"
           id="inputAltura"
           placeholder="Altuara (cm)"
+          name="altura"
         />
       </div>
 
       <div class="form-group">
         <label for="inputTipoSanguineo">Tipo Sanguíneo</label>
-        <select id="inputTipoSanguineo" class="form-control">
+        <select
+          id="inputTipoSanguineo"
+          class="form-control"
+          name="tipoSanguineo"
+        >
           <option selected>Escolher...</option>
           <option>A+</option>
           <option>A-</option>

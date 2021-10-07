@@ -13,8 +13,6 @@ $estado = $_POST['estado'] ?? '';
 $especialidade = $_POST['especialidade'] ?? '';
 $crm = $_POST['crm'] ?? '';
 
-$hashsenha = password_hash($senha, PASSWORD_DEFAULT);
-
 try {
     $sqlPessoa = <<<SQL
     INSERT INTO Pessoa (nome, sexo, email, telefone, cep, logradouro, cidade, estado)

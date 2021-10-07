@@ -12,9 +12,8 @@ $cidade = $_POST['cidade'] ?? '';
 $estado = $_POST['estado'] ?? '';
 $dataContrato = $_POST['dataContrato'] ?? '';
 $salario = $_POST['salario'] ?? '';
-$senhaHash = $_POST['senhaHash'] ?? '';
 
-$hashsenha = password_hash($senha, PASSWORD_DEFAULT);
+$senhaHash = password_hash($senha, PASSWORD_DEFAULT);
 
 try {
     $sqlPessoa = <<<SQL

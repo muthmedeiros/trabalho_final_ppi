@@ -14,8 +14,6 @@ $peso = $_POST['peso'] ?? '';
 $altura = $_POST['altura'] ?? '';
 $tipoSanguineo = $_POST['tipoSanguineo'] ?? '';
 
-$hashsenha = password_hash($senha, PASSWORD_DEFAULT);
-
 try {
     $sqlPessoa = <<<SQL
     INSERT INTO Pessoa (nome, sexo, email, telefone, cep, logradouro, cidade, estado)

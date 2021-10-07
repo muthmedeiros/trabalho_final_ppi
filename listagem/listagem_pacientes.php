@@ -11,6 +11,9 @@ try {
     SQL;
 
     $stmt = $pdo->query($sql);
+
+    header("location: ../listagem_funcionarios/index.html");
+    exit();
 } catch (Exception $e) {
     exit('Ocorreu uma falha ao listar os pacientes: ' . $e->getMessage());
 }

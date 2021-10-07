@@ -1,5 +1,23 @@
+<?php
+require '../conexao_bd/conexao_bd.php';
+$pdo = openDb();
+
+try {
+    $sql = <<<SQL
+    SELECT cep, logradouro, cidade, estado
+    FROM BaseDeEnderecoAjax
+    SQL;
+
+    $stmt = $pdo->query($sql);
+
+    header("location: ../listagem_enderecos/index.html");
+    exit();
+} catch (Exception $e) {
+    exit('Ocorreu uma falha ao listar os endereços: ' . $e->getMessage());
+}
+?>
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR"> 
   <head>
     <meta charset="UTF-8" />
     <meta
@@ -41,7 +59,7 @@
         <a class="p-2 text-dark" href="/listagem_pacientes/index.html"
           >Listar Pacientes</a
         >
-        <a class="p-2 text-dark" href="/listagem_enderecos/index.html"
+        <a class="p-2 text-dark" href="/listagem_enderecos/index.php"
           >Listar Endereços</a
         >
         <a class="p-2 text-dark" href="/listagem_agendamentos/index.html"
@@ -68,20 +86,27 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <th scope="row">1</th>
-          <td>92846781</td>
-          <td>Praça das Cruzes, 287, Santa Mônica</td>
-          <td>Uberlândia</td>
-          <td>Minas Gerais</td>
-        </tr>
-        <tr>
-          <th scope="row">2</th>
-          <td>92846781</td>
-          <td>Praça das Cruzes, 287, Santa Mônica</td>
-          <td>Uberlândia</td>
-          <td>Minas Gerais</td>
-        </tr>
+        <?php
+        while($row = $stmt->fetch()){
+          $rowNumber = 1;
+          $cep = htmlspecialchars($row['cep']);
+          $logradouro = htmlspecialchars($row['logradouro']);
+          $cidade = htmlspecialchars($row['cidade']);
+          $estado = htmlspecialchars($row['estado']);
+
+          echo <<<HTML
+            <tr>
+            <th scope="row">$rowNumber</th>
+            <td>$cep</td>
+            <td>$logradouro</td>
+            <td>$cidade</td>
+            <td>$estado</td>
+          </tr>
+          HTML;
+
+          $rowNumber++;
+        }
+        ?>
       </tbody>
     </table>
     <script
