@@ -15,6 +15,7 @@
       crossorigin="anonymous"
     />
     <link rel="stylesheet" href="style.css" />
+    <script src="funcionario_medico.js"></script>
   </head>
   <body>
     <div
@@ -54,7 +55,11 @@
       </nav>
     </div>
 
-    <form>
+    <form
+      action="../cadastro/cadastrar_funcionario.php"
+      method="POST"
+      id="form"
+    >
       <div class="form-group">
         <label for="inputName">Nome</label>
         <input
@@ -108,34 +113,17 @@
 
       <div class="form-group">
         <label for="inputLogradouro">Logradouro</label>
-        <input
-          type="tel"
-          class="form-control"
-          id="inputLogradouro"
-          placeholder="Digite o endereço"
-        />
+        <input type="text" class="form-control" id="inputLogradouro" />
       </div>
 
       <div class="form-group">
         <label for="inputCidade">Cidade</label>
-        <input
-          type="text"
-          class="form-control"
-          id="inputCidade"
-          placeholder="Digite a cidade"
-        />
+        <input type="text" class="form-control" id="inputCidade" />
       </div>
 
       <div class="form-group">
         <label for="inputEstado">Estado</label>
-        <select id="inputEstado" class="form-control">
-          <option selected>Escolher...</option>
-          <option>Goiás</option>
-          <option>Minas Gerais</option>
-          <option>São Paulo</option>
-          <option>Rio de Janeiro</option>
-          <option>Bahia</option>
-        </select>
+        <input type="text" class="form-control" id="inputEstado" />
       </div>
 
       <div class="form-group">
@@ -188,21 +176,4 @@
       <button type="submit" class="btn btn-primary">Enviar</button>
     </form>
   </body>
-
-  <script>
-    var checkboxMedico = document.getElementById("isMedico");
-    var medicForms = document.getElementById("medicForms");
-
-    function checkIsMedico() {
-      if (checkboxMedico.checked) {
-        medicForms.style["display"] = "";
-      } else {
-        medicForms.style["display"] = "none";
-      }
-    }
-
-    window.onload = () => {
-      checkboxMedico.addEventListener("click", checkIsMedico);
-    };
-  </script>
 </html>
