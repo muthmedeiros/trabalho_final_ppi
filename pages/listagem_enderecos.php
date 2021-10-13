@@ -1,5 +1,20 @@
+<?php
+require '../conexao_bd/conexao_bd.php';
+$pdo = openDb();
+
+try {
+    $sql = <<<SQL
+    SELECT cep, logradouro, cidade, estado
+    FROM BaseDeEnderecoAjax
+    SQL;
+
+    $stmt = $pdo->query($sql);
+} catch (Exception $e) {
+    exit('Ocorreu uma falha ao listar os endereços: ' . $e->getMessage());
+}
+?>
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR"> 
   <head>
     <meta charset="UTF-8" />
     <meta
@@ -7,14 +22,14 @@
       content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
 
-    <title>Listagem de Agendamentos Cadastrados</title>
+    <title>Listagem de Endereços Cadastrados</title>
     <link
       rel="stylesheet"
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
       integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
       crossorigin="anonymous"
     />
-    <link rel="stylesheet" href="style.css" />
+    <!-- <link rel="stylesheet" href="style.css" /> -->
   </head>
   <body>
     <div
@@ -32,22 +47,22 @@
     >
       <h5 class="my-0 mr-md-auto font-weight-normal">Clínica RNM</h5>
       <nav class="my-2 my-md-0 mr-md-3">
-        <a class="p-2 text-dark" href="/novo_funcionario/index.html"
+        <a class="p-2 text-dark" href="novo_funcionario.html"
           >Novo Funcionário</a
         >
-        <a class="p-2 text-dark" href="/novo_paciente/index.html"
+        <a class="p-2 text-dark" href="novo_paciente.html"
           >Novo Paciente</a
         >
-        <a class="p-2 text-dark" href="/listagem_pacientes/index.html"
+        <a class="p-2 text-dark" href="listagem_pacientes.php"
           >Listar Pacientes</a
         >
-        <a class="p-2 text-dark" href="/listagem_enderecos/index.html"
+        <a class="p-2 text-dark" href="listagem_enderecos.php"
           >Listar Endereços</a
         >
-        <a class="p-2 text-dark" href="/listagem_agendamentos/index.html"
+        <a class="p-2 text-dark" href="listagem_agendamentos.php"
           >Listar Agendamentos</a
         >
-        <a class="p-2 text-dark" href="/listagem_meus_agendamentos/index.html"
+        <a class="p-2 text-dark" href="listagem_meus_agendamentos.html"
           >Listar Meus Agendamentos</a
         >
         <!-- só aparece para médicos-->
@@ -56,38 +71,39 @@
 
     <table class="table table-striped table-dark table-hover mt-1">
       <caption>
-        Lista de dados dos agendamentos cadastrados
+        Lista de dados dos endereços cadastrados
       </caption>
       <thead>
         <tr>
           <th scope="col">#</th>
-          <th scope="col">Data</th>
-          <th scope="col">Horário</th>
-          <th scope="col">Nome</th>
-          <th scope="col">Sexo</th>
-          <th scope="col">Email</th>
-          <th scope="col">Código Médico</th>
+          <th scope="col">CEP</th>
+          <th scope="col">Logradouro</th>
+          <th scope="col">Cidade</th>
+          <th scope="col">Estado</th>
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <th scope="row">1</th>
-          <td>19/10/2021</td>
-          <td>13:30</td>
-          <td>Murilo Medeiros do Valle</td>
-          <td>M</td>
-          <td>muthmedeiros@gmail.com</td>
-          <td>111</td>
-        </tr>
-        <tr>
-          <th scope="row">2</th>
-          <td>19/10/2021</td>
-          <td>13:30</td>
-          <td>Murilo Medeiros do Valle</td>
-          <td>M</td>
-          <td>muthmedeiros@gmail.com</td>
-          <td>222</td>
-        </tr>
+        <?php
+        $rowNumber = 1;
+        while($row = $stmt->fetch()){
+          $cep = htmlspecialchars($row['cep']);
+          $logradouro = htmlspecialchars($row['logradouro']);
+          $cidade = htmlspecialchars($row['cidade']);
+          $estado = htmlspecialchars($row['estado']);
+
+          echo <<<HTML
+            <tr>
+            <th scope="row">$rowNumber</th>
+            <td>$cep</td>
+            <td>$logradouro</td>
+            <td>$cidade</td>
+            <td>$estado</td>
+          </tr>
+          HTML;
+
+          $rowNumber++;
+        }
+        ?>
       </tbody>
     </table>
     <script

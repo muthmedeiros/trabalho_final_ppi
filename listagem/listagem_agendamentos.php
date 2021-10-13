@@ -10,7 +10,7 @@ try {
 
     $stmt = $pdo->query($sql);
 
-    header("location: ../listagem_agendamentos/index.html");
+    header("location: ../pages/listagem_agendamentos.html");
     exit();
 } catch (Exception $e) {
     exit('Ocorreu uma falha ao listar os agendamentos: ' . $e->getMessage());

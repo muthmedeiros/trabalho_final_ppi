@@ -35,7 +35,7 @@ try {
     $stm = $pdo->prepare($sqlPaciente);
     $stm->execute([$peso, $altura, $tipoSanguineo]);
 
-    header("location: ../novo_paciente/index.html");
+    header("location: ../pages/novo_paciente.html");
     exit();
 } catch (Exception $e) {
     exit('Falha ao cadastrar os dados do paciente: ' . $e->getMessage());

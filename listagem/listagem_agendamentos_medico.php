@@ -14,7 +14,7 @@ try {
     $stm = $pdo->prepare($sql);
     $stm->execute([$codigoMedico]);
 
-    header("location: ../listagem_meus_agendamentos/index.html");
+    header("location: ../pages/listagem_meus_agendamentos.html");
     exit();
 } catch (Exception $e) {
     exit('Ocorreu uma falha ao listar os agendamentos: ' . $e->getMessage());

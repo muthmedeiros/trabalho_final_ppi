@@ -34,7 +34,7 @@ try {
     $stm = $pdo->prepare($sqlMedico);
     $stm->execute([$especialidade, $crm]);
 
-    header("location: ../novo_funcionario/index.html");
+    header("location: ../pages/novo_funcionario.html");
     exit();
 } catch (Exception $e) {
     exit('Falha ao cadastrar os dados do médico: ' . $e->getMessage());

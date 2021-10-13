@@ -12,7 +12,7 @@ try {
 
     $stmt = $pdo->query($sql);
 
-    header("location: ../listagem_funcionarios/index.html");
+    header("location: ../pages/listagem_funcionario.html");
     exit();
 } catch (Exception $e) {
     exit('Ocorreu uma falha ao listar os funcionarios: ' . $e->getMessage());

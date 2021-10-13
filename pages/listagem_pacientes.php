@@ -1,3 +1,21 @@
+<?php
+require '../conexao_bd/conexao_bd.php';
+$pdo = openDb();
+
+try {
+    $sql = <<<SQL
+    SELECT PE.codigo, PE.nome, PE.sexo, PE.email, PE.telefone, 
+    PE.cep, PE.logradouro, PE.cidade, PE.estado, 
+    PA.peso, PA.altura, PA.tipoSanguineo
+    FROM Pessoa AS PE, Paciente AS PA
+    WHERE PE.codigo = PA.codigo
+    SQL;
+
+    $stmt = $pdo->query($sql);
+} catch (Exception $e) {
+    exit('Ocorreu uma falha ao listar os pacientes: ' . $e->getMessage());
+}
+?>
 <!DOCTYPE html>
 <html lang="pt-BR">
   <head>
@@ -14,7 +32,7 @@
       integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
       crossorigin="anonymous"
     />
-    <link rel="stylesheet" href="style.css" />
+    <!-- <link rel="stylesheet" href="style.css" /> -->
   </head>
   <body>
     <div
@@ -32,22 +50,22 @@
     >
       <h5 class="my-0 mr-md-auto font-weight-normal">Clínica RNM</h5>
       <nav class="my-2 my-md-0 mr-md-3">
-        <a class="p-2 text-dark" href="/novo_funcionario/index.html"
+        <a class="p-2 text-dark" href="novo_funcionario.html"
           >Novo Funcionário</a
         >
-        <a class="p-2 text-dark" href="/novo_paciente/index.html"
+        <a class="p-2 text-dark" href="novo_paciente.html"
           >Novo Paciente</a
         >
-        <a class="p-2 text-dark" href="/listagem_pacientes/index.html"
+        <a class="p-2 text-dark" href="listagem_pacientes.php"
           >Listar Pacientes</a
         >
-        <a class="p-2 text-dark" href="/listagem_enderecos/index.html"
+        <a class="p-2 text-dark" href="listagem_enderecos.php"
           >Listar Endereços</a
         >
-        <a class="p-2 text-dark" href="/listagem_agendamentos/index.html"
+        <a class="p-2 text-dark" href="listagem_agendamentos.php"
           >Listar Agendamentos</a
         >
-        <a class="p-2 text-dark" href="/listagem_meus_agendamentos/index.html"
+        <a class="p-2 text-dark" href="listagem_meus_agendamentos.html"
           >Listar Meus Agendamentos</a
         >
         <!-- só aparece para médicos-->
@@ -66,6 +84,7 @@
           <th scope="col">Email</th>
           <th scope="col">Telefone</th>
           <th scope="col">CEP</th>
+          <th scope="col">Logradouro</th>
           <th scope="col">Cidade</th>
           <th scope="col">Estado</th>
           <th scope="col">Peso (kg)</th>
@@ -74,32 +93,39 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <th scope="row">1</th>
-          <td>Murilo Medeiros do Valle</td>
-          <td>M</td>
-          <td>muthmedeiros@gmail.com</td>
-          <td>64982736123</td>
-          <td>7281736</td>
-          <td>Catalão</td>
-          <td>Goiás</td>
-          <td>84</td>
-          <td>177</td>
-          <td>A+</td>
-        </tr>
-        <tr>
-          <th scope="row">2</th>
-          <td>Murilo Medeiros do Valle</td>
-          <td>M</td>
-          <td>muthmedeiros@gmail.com</td>
-          <td>64982736123</td>
-          <td>7281736</td>
-          <td>Catalão</td>
-          <td>Goiás</td>
-          <td>84</td>
-          <td>177</td>
-          <td>A+</td>
-        </tr>
+        <?php
+        while($row = $stmt->fetch()){
+          $rowNumber = htmlspecialchars($row['codigo']);;
+          $nome = htmlspecialchars($row['nome']);
+          $sexo = htmlspecialchars($row['sexo']);
+          $email = htmlspecialchars($row['email']);
+          $telefone = htmlspecialchars($row['telefone']);
+          $cep = htmlspecialchars($row['cep']);
+          $logradouro = htmlspecialchars($row['logradouro']);
+          $cidade = htmlspecialchars($row['cidade']);
+          $estado = htmlspecialchars($row['estado']);
+          $peso = htmlspecialchars($row['peso']);
+          $altura = htmlspecialchars($row['altura']);
+          $tipoSanguineo = htmlspecialchars($row['tipoSanguineo']);
+
+          echo <<<HTML
+            <tr>
+            <th scope="row">$rowNumber</th>
+            <td>$nome</td>
+            <td>$sexo</td>
+            <td>$email</td>
+            <td>$telefone</td>
+            <td>$cep</td>
+            <td>$logradouro</td>
+            <td>$cidade</td>
+            <td>$estado</td>
+            <td>$peso</td>
+            <td>$altura</td>
+            <td>$tipoSanguineo</td>
+          </tr>
+          HTML;
+        }
+        ?>
       </tbody>
     </table>
     <script

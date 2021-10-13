@@ -36,7 +36,7 @@ try {
     $stm = $pdo->prepare($sqlFuncionario);
     $stm->execute([$dataContrato, $salario, $senhaHash]);
 
-    header("location: ../novo_funcionario/index.html");
+    header("location: ../pages/novo_funcionario.html");
     exit();
 } catch (Exception $e) {
     exit('Falha ao cadastrar os dados do funcionário: ' . $e->getMessage());

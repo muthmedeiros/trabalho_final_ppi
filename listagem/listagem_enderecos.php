@@ -10,7 +10,7 @@ try {
 
     $stmt = $pdo->query($sql);
 
-    header("location: ../listagem_enderecos/index.html");
+    header("location: ../pages/listagem_enderecos.php");
     exit();
 } catch (Exception $e) {
     exit('Ocorreu uma falha ao listar os endereços: ' . $e->getMessage());
