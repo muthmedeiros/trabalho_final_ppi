@@ -15,7 +15,7 @@
       crossorigin="anonymous"
     />
     <!-- <link rel="stylesheet" href="style.css" /> -->
-    <script src="../js/busca_endereco.js"></script>
+    <!-- <script src="funcionario_medico.js"></script> -->
   </head>
   <body>
     <div
@@ -36,9 +36,7 @@
         <a class="p-2 text-dark" href="novo_funcionario.html"
           >Novo Funcionário</a
         >
-        <a class="p-2 text-dark" href="novo_paciente.html"
-          >Novo Paciente</a
-        >
+        <a class="p-2 text-dark" href="novo_paciente.html">Novo Paciente</a>
         <a class="p-2 text-dark" href="listagem_pacientes.php"
           >Listar Pacientes</a
         >
@@ -108,22 +106,38 @@
           class="form-control"
           id="inputCep"
           placeholder="Digite o CEP"
+          name="inputCep"
         />
       </div>
 
       <div class="form-group">
         <label for="inputLogradouro">Logradouro</label>
-        <input type="text" class="form-control" id="inputLogradouro" />
+        <input
+          type="text"
+          class="form-control"
+          id="inputLogradouro"
+          name="inputLogradouro"
+        />
       </div>
 
       <div class="form-group">
         <label for="inputCidade">Cidade</label>
-        <input type="text" class="form-control" id="inputCidade" />
+        <input
+          type="text"
+          class="form-control"
+          id="inputCidade"
+          name="inputCidade"
+        />
       </div>
 
       <div class="form-group">
         <label for="inputEstado">Estado</label>
-        <input type="text" class="form-control" id="inputEstado" />
+        <input
+          type="text"
+          class="form-control"
+          id="inputEstado"
+          name="inputEstado"
+        />
       </div>
 
       <div class="form-group">
@@ -176,4 +190,57 @@
       <button type="submit" class="btn btn-primary">Enviar</button>
     </form>
   </body>
+  <script>
+    var checkboxMedico = document.getElementById("isMedico");
+    var medicForms = document.getElementById("medicForms");
+    var medicActionPhp = document.getElementById("form");
+    var inputCep = document.getElementById("inputCep");
+
+    function checkIsMedico() {
+      if (checkboxMedico.checked) {
+        medicForms.style["display"] = "";
+        medicActionPhp.action = "../cadastro/cadastrar_medico.php";
+      } else {
+        medicForms.style["display"] = "none";
+        medicActionPhp.action = "../cadastro/cadastrar_funcionario.php";
+      }
+    }
+
+    async function buscaEndereco(cep) {
+      if (cep.length != 8) return;
+
+      try {
+        let response = await fetch(
+          "../busca_endereco/busca_endereco.php?cep=" + cep,
+          {
+            method: "get",
+            headers: {
+              "content-type": "application/json",
+            },
+            body: JSON.stringify({
+              logradouro: data.logradouro,
+              cidade: data.cidade,
+              estado: data.estado,
+            }),
+          }
+        );
+        if (!response.ok) throw new Error(response.statusText);
+        var endereco = await response.json();
+      } catch (e) {
+        // console.error(e);
+        return;
+      }
+
+      let form = document.querySelector("form");
+      form.inputLogradouro.value = endereco.logradouro;
+      form.inputCidade.value = endereco.cidade;
+      form.inputEstado.value = endereco.estado;
+    }
+
+    window.onload = () => {
+      checkboxMedico.addEventListener("click", checkIsMedico);
+
+      inputCep.onkeyup = () => buscaEndereco(inputCep.value);
+    };
+  </script>
 </html>

@@ -11,8 +11,8 @@ try {
     WHERE codigoMedico = ?
     SQL;
 
-    $stm = $pdo->prepare($sql);
-    $stm->execute([$codigoMedico]);
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$codigoMedico]);
 
     header("location: ../pages/listagem_meus_agendamentos.html");
     exit();
