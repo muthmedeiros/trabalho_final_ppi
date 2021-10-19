@@ -1,0 +1,16 @@
+body {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+select {
+    margin-bottom: 5px;
+}
+
+span {
+    display: none;
+    text-align: center;
+    color: red;
+}
