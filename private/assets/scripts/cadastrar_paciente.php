@@ -1,18 +1,18 @@
 <?php
-require '../connection.php';
+require '../../../connection.php';
 $pdo = mysqlConnect();
 
-$nome = $_POST['nome'] ?? '';
-$sexo = $_POST['sexo'] ?? '';
-$email = $_POST['email'] ?? '';
-$telefone = $_POST['telefone'] ?? '';
-$cep = $_POST['cep'] ?? '';
-$logradouro = $_POST['logradouro'] ?? '';
-$cidade = $_POST['cidade'] ?? '';
-$estado = $_POST['estado'] ?? '';
-$peso = $_POST['peso'] ?? '';
-$altura = $_POST['altura'] ?? '';
-$tipoSanguineo = $_POST['tipoSanguineo'] ?? '';
+$nome = $_POST['inputNome'] ?? '';
+$sexo = $_POST['inputSexo'] ?? '';
+$email = $_POST['inputEmail'] ?? '';
+$telefone = $_POST['inputTelefone'] ?? '';
+$cep = $_POST['inputCep'] ?? '';
+$logradouro = $_POST['inputLogradouro'] ?? '';
+$cidade = $_POST['inputCidade'] ?? '';
+$estado = $_POST['inputEstado'] ?? '';
+$peso = $_POST['inputPeso'] ?? '';
+$altura = $_POST['inputAltura'] ?? '';
+$tipoSanguineo = $_POST['inputTipoSanguineo'] ?? '';
 
 try {
     $sqlPessoa = <<<SQL
@@ -35,7 +35,7 @@ try {
     $stm = $pdo->prepare($sqlPaciente);
     $stm->execute([$peso, $altura, $tipoSanguineo]);
 
-    header("location: ../pages/listagem_pacientes.php");
+    header("location: ../../src/listagem_pacientes.php");
     exit();
 } catch (Exception $e) {
     exit('Falha ao cadastrar os dados do paciente: ' . $e->getMessage());

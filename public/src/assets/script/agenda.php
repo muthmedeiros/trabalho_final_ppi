@@ -11,7 +11,7 @@
 
 <?php
 
-require_once "./PROJETO-FINAL/connection.php";
+require_once "../../../../connection.php";
 
 
 if($_SERVER["REQUEST_METHOD"]=="GET"){

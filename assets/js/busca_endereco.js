@@ -1,10 +1,10 @@
-async function buscaEndereco(cep) {
+async function buscaEndereco(cep, path) {
   if (cep.length != 8) return;
 
   try {
     var endereco;
     const response = await fetch(
-      "../busca_endereco/busca_endereco.php?cep=" + cep
+      path + cep
     );
     if (!response.ok) throw new Error(response.statusText);
     var endereco = await response.json();

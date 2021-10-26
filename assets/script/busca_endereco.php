@@ -15,7 +15,7 @@ class BaseDeEndereco
     }
 }
 
-require '../connection.php';
+require '../../connection.php';
 $pdo = mysqlConnect();
 
 $cep = $_GET["cep"];

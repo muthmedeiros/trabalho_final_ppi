@@ -1,20 +1,20 @@
 <?php
-require '../connection.php';
+require '../../../connection.php';
 $pdo = mysqlConnect();
 
-$nome = $_POST['nome'] ?? '';
-$sexo = $_POST['sexo'] ?? '';
-$email = $_POST['email'] ?? '';
-$telefone = $_POST['telefone'] ?? '';
-$cep = $_POST['cep'] ?? '';
-$logradouro = $_POST['logradouro'] ?? '';
-$cidade = $_POST['cidade'] ?? '';
-$estado = $_POST['estado'] ?? '';
-$dataContrato = $_POST['dataContrato'] ?? '';
-$salario = $_POST['salario'] ?? '';
-$senha = $_POST['senha'] ?? '';
-$especialidade = $_POST['especialidade'] ?? '';
-$crm = $_POST['crm'] ?? '';
+$nome = $_POST['inputNome'] ?? '';
+$sexo = $_POST['inputSexo'] ?? '';
+$email = $_POST['inputEmail'] ?? '';
+$telefone = $_POST['inputTelefone'] ?? '';
+$cep = $_POST['inputCep'] ?? '';
+$logradouro = $_POST['inputLogradouro'] ?? '';
+$cidade = $_POST['inputCidade'] ?? '';
+$estado = $_POST['inputEstado'] ?? '';
+$dataContrato = $_POST['inputDataContrato'] ?? '';
+$salario = $_POST['inputSalario'] ?? '';
+$senha = $_POST['inputSenha'] ?? '';
+$especialidade = $_POST['inputEspecialidade'] ?? '';
+$crm = $_POST['inputCrm'] ?? '';
 
 $senhaHash = password_hash($senha, PASSWORD_DEFAULT);
 
@@ -47,7 +47,7 @@ try {
     $stm = $pdo->prepare($sqlMedico);
     $stm->execute([$especialidade, $crm]);
 
-    header("location: ../pages/listagem_funcionarios.php");
+    header("location: ../../src/listagem_funcionarios.php");
     exit();
 } catch (Exception $e) {
     exit('Falha ao cadastrar os dados do médico: ' . $e->getMessage());

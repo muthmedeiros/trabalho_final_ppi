@@ -14,7 +14,6 @@
       integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
       crossorigin="anonymous"
     />
-    <!-- <link rel="stylesheet" href="style.css" /> -->
   </head>
   <body>
     <div
@@ -57,26 +56,26 @@
 
     <div class="container">
       <form
-        action="../cadastro/cadastrar_paciente.php"
+        action="../assets/scripts/cadastrar_paciente.php"
         method="POST"
         id="form"
         class="px-5 pb-5"
       >
         <div class="form-group">
-          <label for="inputName">Nome</label>
+          <label for="inputNome">Nome</label>
           <input
             type="text"
             class="form-control"
-            id="inputName"
+            id="inputNome"
             placeholder="Digite o nome completo"
-            name="nome"
+            name="inputNome"
             required
           />
         </div>
 
         <div class="form-group">
           <label for="inputSexo">Sexo</label>
-          <select id="inputSexo" class="form-control" name="sexo" required>
+          <select id="inputSexo" class="form-control" name="inputSexo" required>
             <option selected>Escolher...</option>
             <option value="Masculino">Masculino</option>
             <option value="Feminino">Feminino</option>
@@ -92,7 +91,7 @@
             class="form-control"
             id="inputEmail"
             placeholder="Digite o email"
-            name="email"
+            name="inputEmail"
             required
           />
         </div>
@@ -104,7 +103,7 @@
             class="form-control"
             id="inputTelefone"
             placeholder="Digite o telefone de contato"
-            name="telefone"
+            name="inputTelefone"
             required
           />
         </div>
@@ -116,7 +115,7 @@
             class="form-control"
             id="inputCep"
             placeholder="Digite o CEP"
-            name="cep"
+            name="inputCep"
             required
           />
         </div>
@@ -127,7 +126,7 @@
             type="tel"
             class="form-control"
             id="inputLogradouro"
-            name="logradouro"
+            name="inputLogradouro"
             required
           />
         </div>
@@ -138,7 +137,7 @@
             type="text"
             class="form-control"
             id="inputCidade"
-            name="cidade"
+            name="inputCidade"
             required
           />
         </div>
@@ -149,7 +148,7 @@
             type="text"
             class="form-control"
             id="inputEstado"
-            name="estado"
+            name="inputEstado"
             required
           />
         </div>
@@ -161,7 +160,7 @@
             class="form-control"
             id="inputPeso"
             placeholder="Peso (kg)"
-            name="peso"
+            name="inputPeso"
             required
           />
         </div>
@@ -173,7 +172,7 @@
             class="form-control"
             id="inputAltura"
             placeholder="Altuara (cm)"
-            name="altura"
+            name="inputAltura"
             required
           />
         </div>
@@ -183,7 +182,7 @@
           <select
             id="inputTipoSanguineo"
             class="form-control"
-            name="tipoSanguineo"
+            name="inputTipoSanguineo"
             required
           >
             <option selected>Escolher...</option>
@@ -201,12 +200,12 @@
         <button type="submit" class="btn btn-primary">Enviar</button>
       </form>
     </div>
-    <script src="../js/busca_endereco.js"></script>
+    <script src="../../assets/js/busca_endereco.js"></script>
     <script>
       var inputCep = document.getElementById("inputCep");
 
       window.onload = () => {
-        inputCep.onkeyup = () => buscaEndereco(inputCep.value);
+        inputCep.onkeyup = () => buscaEndereco(inputCep.value, "../../assets/script/busca_endereco.php?cep=");
       };
     </script>
   </body>

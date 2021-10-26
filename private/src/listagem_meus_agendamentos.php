@@ -1,5 +1,5 @@
 <?php
-require '../connection.php';
+require '../../connection.php';
 
 $pdo = mysqlConnect();
 
@@ -14,9 +14,7 @@ try {
 
     $stmt = $pdo->prepare($sql);
     $stmt->execute([$codigoMedico]);
-
-    header("location: ../pages/listagem_meus_agendamentos.html");
-    exit();
+    
 } catch (Exception $e) {
     exit('Ocorreu uma falha ao listar os agendamentos: ' . $e->getMessage());
 }
@@ -37,7 +35,6 @@ try {
       integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
       crossorigin="anonymous"
     />
-    <!-- <link rel="stylesheet" href="style.css" /> -->
   </head>
   <body>
     <div

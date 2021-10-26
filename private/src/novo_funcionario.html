@@ -56,26 +56,26 @@
 
     <div class="container">
       <form
-        action="../cadastro/cadastrar_funcionario.php"
+        action="../assets/scripts/cadastrar_funcionario.php"
         method="POST"
         id="form"
         class="px-5 pb-5"
       >
         <div class="form-group">
-          <label for="inputName">Nome</label>
+          <label for="inputNome">Nome</label>
           <input
             type="text"
             class="form-control"
-            id="inputName"
+            id="inputNome"
             placeholder="Digite o nome completo"
-            name="nome"
+            name="inputNome"
             required
           />
         </div>
 
         <div class="form-group">
           <label for="inputSexo">Sexo</label>
-          <select id="inputSexo" class="form-control" name="sexo" required>
+          <select id="inputSexo" class="form-control" name="inputSexo" required>
             <option selected>Escolher...</option>
             <option value="Masculino">Masculino</option>
             <option value="Feminino">Feminino</option>
@@ -91,7 +91,7 @@
             class="form-control"
             id="inputEmail"
             placeholder="Digite o email"
-            name="email"
+            name="inputEmail"
             required
           />
         </div>
@@ -103,7 +103,7 @@
             class="form-control"
             id="inputTelefone"
             placeholder="Digite o telefone de contato"
-            name="telefone"
+            name="inputTelefone"
             required
           />
         </div>
@@ -115,7 +115,7 @@
             class="form-control"
             id="inputCep"
             placeholder="Digite o CEP"
-            name="cep"
+            name="inputCep"
             required
           />
         </div>
@@ -126,7 +126,7 @@
             type="text"
             class="form-control"
             id="inputLogradouro"
-            name="logradouro"
+            name="inputLogradouro"
             required
           />
         </div>
@@ -137,7 +137,7 @@
             type="text"
             class="form-control"
             id="inputCidade"
-            name="cidade"
+            name="inputCidade"
             required
           />
         </div>
@@ -148,18 +148,18 @@
             type="text"
             class="form-control"
             id="inputEstado"
-            name="estado"
+            name="inputEstado"
             required
           />
         </div>
 
         <div class="form-group">
-          <label for="inputDataInicio">Início do contrato</label>
+          <label for="inputDataContrato">Início do contrato</label>
           <input
             type="date"
             class="form-control"
-            id="inputDataInicio"
-            name="dataContrato"
+            id="inputDataContrato"
+            name="inputDataContrato"
             required
           />
         </div>
@@ -171,7 +171,7 @@
             class="form-control"
             id="inputSalario"
             placeholder="Digite o salário"
-            name="salario"
+            name="inputSalario"
             required
           />
         </div>
@@ -182,18 +182,13 @@
             type="password"
             class="form-control"
             id="inputSenha"
-            name="senha"
+            name="inputSenha"
             required
           />
         </div>
 
         <div class="form-group form-check">
-          <input
-            type="checkbox"
-            class="form-check-input"
-            id="isMedico"
-            required
-          />
+          <input type="checkbox" class="form-check-input" id="isMedico" />
           <label class="form-check-label" for="isMedico">Médico</label>
         </div>
 
@@ -205,8 +200,7 @@
               class="form-control"
               id="inputEspecialidade"
               placeholder="Digite a especialidade"
-              name="especialidade"
-              required
+              name="inputEspecialidade"
             />
           </div>
 
@@ -217,8 +211,7 @@
               class="form-control"
               id="inputCrm"
               placeholder="Digite o CRM"
-              name="crm"
-              required
+              name="inputCrm"
             />
           </div>
         </div>
@@ -226,26 +219,38 @@
         <button type="submit" class="btn btn-primary">Enviar</button>
       </form>
     </div>
-    <script src="../js/busca_endereco.js"></script>
+    <script src="../../assets/js/busca_endereco.js"></script>
     <script>
       var checkboxMedico = document.getElementById("isMedico");
       var medicForms = document.getElementById("medicForms");
       var medicActionPhp = document.getElementById("form");
+      var inputEspecialidade = document.getElementById("inputEspecialidade");
+      var inputCrm = document.getElementById("inputCrm");
       var inputCep = document.getElementById("inputCep");
 
       function checkIsMedico() {
         if (checkboxMedico.checked) {
+          inputEspecialidade.required = true;
+          inputCrm.required = true;
           medicForms.style["display"] = "";
-          medicActionPhp.action = "../cadastro/cadastrar_medico.php";
+          medicForms.medicActionPhp.action =
+            "../assets/scripts/cadastrar_medico.php";
         } else {
+          inputEspecialidade.required = false;
+          inputCrm.required = false;
           medicForms.style["display"] = "none";
-          medicActionPhp.action = "../cadastro/cadastrar_funcionario.php";
+          inputEspecialidade.medicActionPhp.action =
+            "../assets/scripts/cadastrar_funcionario.php";
         }
       }
 
       window.onload = () => {
         checkboxMedico.addEventListener("click", checkIsMedico);
-        inputCep.onkeyup = () => buscaEndereco(inputCep.value);
+        inputCep.onkeyup = () =>
+          buscaEndereco(
+            inputCep.value,
+            "../../assets/script/busca_endereco.php?cep="
+          );
       };
     </script>
   </body>
