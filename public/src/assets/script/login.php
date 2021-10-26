@@ -3,18 +3,16 @@
 require_once "../../../../connection.php";
 session_start();
 $pdo = mysqlConnect();
-exitWhenNotLogged($pdo);
-
 
 class RequestResponse
 {
-        public $sucess;
+        public $success;
         public $detail;
 
-        function __construct($sucess, $detail)
+        function __construct($success, $detail)
         {
-                $this->$sucess = $sucess;
-                $this->$detail = $detail;
+                $this->success = $success;
+                $this->detail = $detail;
         }
 }
 
@@ -24,10 +22,11 @@ function checkLogin($pdo, $email, $senha)
         $sql = <<<SQL
                 SELECT *
                 FROM Pessoa AS PS, Funcionario AS FC
-                WHERE  FC.codigo = PS.codigo  AND  PS.email = ? AND FC.senhaHash = ?
+                WHERE FC.codigo = PS.codigo  AND  PS.email = ? AND FC.senhaHash = ?
                 SQL;
 
         try {
+
                 $stmt = $pdo->prepare($sql);
                 $stmt->execute([$email, $senha]);
                 $row = $stmt->fetch();
@@ -45,20 +44,26 @@ function checkLogin($pdo, $email, $senha)
 function checkPassword($pdo, $email, $senha)
 {
         $sql = <<<SQL
-        SELECT senhaHash
-        FROM Funcionario
+        SELECT FC.senhaHash
+        FROM Pessoa AS PS, Funcionario AS FC
+        WHERE PS.email = ? AND PS.codigo = FC.codigo
         SQL;
 
         try {
                 $stmt = $pdo->prepare($sql);
                 $stmt->execute([$email]);
                 $senhaHash = $stmt->fetchColumn();
+
                 if (!$senhaHash) {
+                        echo 'sem senha';
                         return false;
                 }
                 if (!password_verify($senha, $senhaHash)) {
+                        echo 'senha errada';
                         return false;
                 }
+
+                return $senhaHash;
         } catch (Exception $e) {
                 exit('falhou' . $e->getMessage());
         }
@@ -67,59 +72,39 @@ function checkPassword($pdo, $email, $senha)
 
 function checkLogged($pdo)
 {
-        if (!isset($inputEmail, $inputSenha))
+        // Verifica se as variáveis de sessão criadas
+        // no momento do login estão definidas
+        if (!isset($_SESSION['emailUsuario'], $_SESSION['loginString']))
                 return false;
-}
 
-function isDoctor($inputEmail){
+        $email = $_SESSION['emailUsuario'];
+
+        // Resgata a senha hash armazenada para conferência
+        $sql = <<<SQL
+          SELECT hash_senha
+          FROM cliente
+          WHERE email = ?
+          SQL;
+
         try {
-                $sql = <<<SQL
-                SELECT ME.codigo
-                FROM Medico ME, Pessoa PE
-                WHERE PE.email = ?
-                SQL;
+                $stmt = $pdo->prepare($sql);
+                $stmt->execute([$email]);
+                $senhaHash = $stmt->fetchColumn();
+                if (!$senhaHash)
+                        return false; // nenhum resultado (email não encontrado)
 
-                $stmt = $pdo->prepare($sqlPessoa);
-                $stmt->execute([$inputEmail]);
+                // Gera uma nova string de login com base nos dados
+                // atuais do navegador do usuário e compara com a
+                // string de login gerada anteriormente no momento do login
+                $loginStringCheck = hash('sha512', $senhaHash . $_SERVER['HTTP_USER_AGENT']);
+                if (!hash_equals($loginStringCheck, $_SESSION['loginString']))
+                        return false;
 
-                return $stmt->fetch()['codigo'];
+                return true;
         } catch (Exception $e) {
-                exit($e->getMessage());
+                exit('Falha inesperada: ' . $e->getMessage());
         }
 }
-
-
-// main
-$errormsg = "";
-
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
-
-        if (isset($_POST['inputEmail'])) $inputEmail = $_POST["inputEmail"];
-        if (isset($_POST['inputSenha'])) $inputSenha = $_POST["inputSenha"];
-
-        $inputEmail = htmlspecialchars($inputEmail);
-        $inputSenha = htmlspecialchars($inputSenha);
-        
-        $senhaHash = password_hash($inputSenha, PASSWORD_DEFAULT);
-
-        if (checkLogin($pdo, $inputEmail, $inputSenha)) {
-                header("location: ../../../../private/index.html");
-                exit();
-        } else
-                $errorMsg = "Dados incorretos";
-}
-
-
-if ($senhaHash = checkPassword($pdo, $email, $senha)) {
-        $_SESSION['emailUsuario'] = $email;
-        $_SESSION['loginString'] = hash('sha512', $senhaHash . $_SERVER['HTTP_USER_AGENT']);
-        $_SESSION['medico'] = isDoctor($inputEmail);
-        $response = new RequestResponse(true, '');
-} else {
-        $response = new RequestResponse(false, '');
-}
-echo json_encode($response);
 
 function exitWhenNotLogged($pdo)
 {
@@ -128,3 +113,37 @@ function exitWhenNotLogged($pdo)
                 exit();
         }
 }
+
+function isDoctor($pdo, $inputEmail)
+{
+        try {
+                $sql = <<<SQL
+                SELECT ME.codigo
+                FROM Medico ME, Pessoa PE
+                WHERE PE.email = ?
+                SQL;
+
+                $stmt = $pdo->prepare($sql);
+                $stmt->execute([$inputEmail]);
+
+                return $stmt->fetch()['codigo'];
+        } catch (Exception $e) {
+                exit($e->getMessage());
+        }
+}
+
+// main
+$errormsg = "";
+
+$email = $_POST['inputEmail'] ?? '';
+$senha = $_POST['inputSenha'] ?? '';
+
+if ($senhaHash = checkPassword($pdo, $email, $senha)) {
+        $_SESSION['emailUsuario'] = $email;
+        $_SESSION['loginString'] = hash('sha512', $senhaHash . $_SERVER['HTTP_USER_AGENT']);
+        $_SESSION['medico'] = isDoctor($pdo, $inputEmail);
+        $response = new RequestResponse(true, '../../private/index.html');
+} else {
+        $response = new RequestResponse(false, 'login.html');
+}
+echo json_encode($response);

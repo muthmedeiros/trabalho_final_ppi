@@ -49,10 +49,10 @@ try {
     >
       <h5 class="my-0 mr-md-auto font-weight-normal">Clínica RNM</h5>
       <nav class="my-2 my-md-0 mr-md-3">
-        <a class="p-2 text-dark" href="novo_funcionario.html"
+        <a class="p-2 text-dark" href="novo_funcionario.php"
           >Novo Funcionário</a
         >
-        <a class="p-2 text-dark" href="novo_paciente.html"
+        <a class="p-2 text-dark" href="novo_paciente.php"
           >Novo Paciente</a
         >
         <a class="p-2 text-dark" href="listagem_funcionarios.php"

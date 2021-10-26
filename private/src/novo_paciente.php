@@ -7,7 +7,7 @@
       content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
 
-    <title>Cadastro de Funcionário</title>
+    <title>Cadastro de Pacientes</title>
     <link
       rel="stylesheet"
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
@@ -31,10 +31,10 @@
     >
       <h5 class="my-0 mr-md-auto font-weight-normal">Clínica RNM</h5>
       <nav class="my-2 my-md-0 mr-md-3">
-        <a class="p-2 text-dark" href="novo_funcionario.html"
+        <a class="p-2 text-dark" href="novo_funcionario.php"
           >Novo Funcionário</a
         >
-        <a class="p-2 text-dark" href="novo_paciente.html">Novo Paciente</a>
+        <a class="p-2 text-dark" href="novo_paciente.php">Novo Paciente</a>
         <a class="p-2 text-dark" href="listagem_funcionarios.php"
           >Listar Funcionários</a
         >
@@ -56,7 +56,7 @@
 
     <div class="container">
       <form
-        action="../assets/scripts/cadastrar_funcionario.php"
+        action="../assets/scripts/cadastrar_paciente.php"
         method="POST"
         id="form"
         class="px-5 pb-5"
@@ -123,7 +123,7 @@
         <div class="form-group">
           <label for="inputLogradouro">Logradouro</label>
           <input
-            type="text"
+            type="tel"
             class="form-control"
             id="inputLogradouro"
             name="inputLogradouro"
@@ -154,66 +154,47 @@
         </div>
 
         <div class="form-group">
-          <label for="inputDataContrato">Início do contrato</label>
+          <label for="inputPeso">Peso</label>
           <input
-            type="date"
+            type="number"
             class="form-control"
-            id="inputDataContrato"
-            name="inputDataContrato"
+            id="inputPeso"
+            placeholder="Peso (kg)"
+            name="inputPeso"
             required
           />
         </div>
 
         <div class="form-group">
-          <label for="inputSalario">Salário</label>
+          <label for="inputAltura">Altura</label>
           <input
-            type="text"
+            type="number"
             class="form-control"
-            id="inputSalario"
-            placeholder="Digite o salário"
-            name="inputSalario"
+            id="inputAltura"
+            placeholder="Altuara (cm)"
+            name="inputAltura"
             required
           />
         </div>
 
         <div class="form-group">
-          <label for="inputSenha">Senha</label>
-          <input
-            type="password"
+          <label for="inputTipoSanguineo">Tipo Sanguíneo</label>
+          <select
+            id="inputTipoSanguineo"
             class="form-control"
-            id="inputSenha"
-            name="inputSenha"
+            name="inputTipoSanguineo"
             required
-          />
-        </div>
-
-        <div class="form-group form-check">
-          <input type="checkbox" class="form-check-input" id="isMedico" />
-          <label class="form-check-label" for="isMedico">Médico</label>
-        </div>
-
-        <div id="medicForms" style="display: none">
-          <div class="form-group">
-            <label for="inputEspecialidade">Especialidade</label>
-            <input
-              type="text"
-              class="form-control"
-              id="inputEspecialidade"
-              placeholder="Digite a especialidade"
-              name="inputEspecialidade"
-            />
-          </div>
-
-          <div class="form-group">
-            <label for="inputCrm">CRM</label>
-            <input
-              type="text"
-              class="form-control"
-              id="inputCrm"
-              placeholder="Digite o CRM"
-              name="inputCrm"
-            />
-          </div>
+          >
+            <option selected>Escolher...</option>
+            <option value="A+">A+</option>
+            <option value="A-">A-</option>
+            <option value="B+">B+</option>
+            <option value="B-">B-</option>
+            <option value="AB+">AB+</option>
+            <option value="AB-">AB-</option>
+            <option value="O+">O+</option>
+            <option value="0-">O-</option>
+          </select>
         </div>
 
         <button type="submit" class="btn btn-primary">Enviar</button>
@@ -221,36 +202,10 @@
     </div>
     <script src="../../assets/js/busca_endereco.js"></script>
     <script>
-      var checkboxMedico = document.getElementById("isMedico");
-      var medicForms = document.getElementById("medicForms");
-      var medicActionPhp = document.getElementById("form");
-      var inputEspecialidade = document.getElementById("inputEspecialidade");
-      var inputCrm = document.getElementById("inputCrm");
       var inputCep = document.getElementById("inputCep");
 
-      function checkIsMedico() {
-        if (checkboxMedico.checked) {
-          inputEspecialidade.required = true;
-          inputCrm.required = true;
-          medicForms.style["display"] = "";
-          medicActionPhp.action =
-            "../assets/scripts/cadastrar_medico.php";
-        } else {
-          inputEspecialidade.required = false;
-          inputCrm.required = false;
-          medicForms.style["display"] = "none";
-          medicActionPhp.action =
-            "../assets/scripts/cadastrar_funcionario.php";
-        }
-      }
-
       window.onload = () => {
-        checkboxMedico.addEventListener("click", checkIsMedico);
-        inputCep.onkeyup = () =>
-          buscaEndereco(
-            inputCep.value,
-            "../../assets/script/busca_endereco.php?cep="
-          );
+        inputCep.onkeyup = () => buscaEndereco(inputCep.value, "../../assets/script/busca_endereco.php?cep=");
       };
     </script>
   </body>
