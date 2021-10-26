@@ -32,7 +32,7 @@ try {
         throw new Exception('Falha na operação em Pessoa.');
     }
     
-    $lastInsertedId = $pdo->lastInsertedId();
+    $lastInsertedId = $pdo->lastInsertId();
 
     $sqlPaciente = <<<SQL
     INSERT INTO Paciente (codigo, peso, altura, tipoSanguineo)

@@ -36,7 +36,7 @@ try {
         throw new Exception('Falha na operação em Pessoa.');
     }
 
-    $lastInsertedId = $pdo->lastInsertedId();
+    $lastInsertedId = $pdo->lastInsertId();
 
     $sqlFuncionario = <<<SQL
     INSERT INTO Funcionario (codigo, dataContrato, salario, senhaHash)

@@ -233,13 +233,13 @@
           inputEspecialidade.required = true;
           inputCrm.required = true;
           medicForms.style["display"] = "";
-          medicForms.medicActionPhp.action =
+          medicActionPhp.action =
             "../assets/scripts/cadastrar_medico.php";
         } else {
           inputEspecialidade.required = false;
           inputCrm.required = false;
           medicForms.style["display"] = "none";
-          inputEspecialidade.medicActionPhp.action =
+          medicActionPhp.action =
             "../assets/scripts/cadastrar_funcionario.php";
         }
       }

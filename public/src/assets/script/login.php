@@ -71,6 +71,23 @@ function checkLogged($pdo)
                 return false;
 }
 
+function isDoctor($inputEmail){
+        try {
+                $sql = <<<SQL
+                SELECT ME.codigo
+                FROM Medico ME, Pessoa PE
+                WHERE PE.email = ?
+                SQL;
+
+                $stmt = $pdo->prepare($sqlPessoa);
+                $stmt->execute([$inputEmail]);
+
+                return $stmt->fetch()['codigo'];
+        } catch (Exception $e) {
+                exit($e->getMessage());
+        }
+}
+
 
 // main
 $errormsg = "";
@@ -83,7 +100,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $inputEmail = htmlspecialchars($inputEmail);
         $inputSenha = htmlspecialchars($inputSenha);
-
+        
         $senhaHash = password_hash($inputSenha, PASSWORD_DEFAULT);
 
         if (checkLogin($pdo, $inputEmail, $inputSenha)) {
@@ -97,6 +114,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 if ($senhaHash = checkPassword($pdo, $email, $senha)) {
         $_SESSION['emailUsuario'] = $email;
         $_SESSION['loginString'] = hash('sha512', $senhaHash . $_SERVER['HTTP_USER_AGENT']);
+        $_SESSION['medico'] = isDoctor($inputEmail);
         $response = new RequestResponse(true, '');
 } else {
         $response = new RequestResponse(false, '');
