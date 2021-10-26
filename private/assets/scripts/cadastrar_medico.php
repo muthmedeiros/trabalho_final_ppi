@@ -19,33 +19,52 @@ $crm = $_POST['inputCrm'] ?? '';
 $senhaHash = password_hash($senha, PASSWORD_DEFAULT);
 
 try {
+    $pdo->beginTransaction();
+    
     $sqlPessoa = <<<SQL
     INSERT INTO Pessoa (nome, sexo, email, telefone, cep, logradouro, cidade, estado)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?)
     SQL;
 
-    $sqlFuncionario = <<<SQL
-    INSERT INTO Funcionario (dataContrato, salario, senhaHash)
-    VALUES (?, ?, ?)
-    SQL;
-
-    $sqlMedico = <<<SQL
-    INSERT INTO Medico (especialidade, crm)
-    VALUES (?, ?)
-    SQL;
-
-    $stm = $pdo->prepare($sqlPessoa);
-    $stm->execute([
+    $stmt = $pdo->prepare($sqlPessoa);
+    $result1 = $stmt->execute([
         $nome, $sexo, $email,
         $telefone, $cep, $logradouro,
         $cidade, $estado
     ]);
+    if(!$result1) {
+        throw new Exception('Falha na operação em Pessoa.');
+    }
+
+    $lastInsertedId = $pdo->lastInsertedId();
+
+    $sqlFuncionario = <<<SQL
+    INSERT INTO Funcionario (codigo, dataContrato, salario, senhaHash)
+    VALUES (?, ?, ?, ?)
+    SQL;
 
     $stm = $pdo->prepare($sqlFuncionario);
-    $stm->execute([$dataContrato, $salario, $senhaHash]);
+    $result2 = $stm->execute([
+        $lastInsertedId, $dataContrato, $salario, $senhaHash
+    ]);
+    if(!$result2) {
+        throw new Exception('Falha na operação em Funcionário.');
+    }
+
+    $sqlMedico = <<<SQL
+    INSERT INTO Medico (codigo, especialidade, crm)
+    VALUES (?, ?, ?)
+    SQL;
 
     $stm = $pdo->prepare($sqlMedico);
-    $stm->execute([$especialidade, $crm]);
+    $result3 = $stm->execute([
+        $lastInsertedId, $especialidade, $crm
+    ]);
+    if(!$result3) {
+        throw new Exception('Falha na operação em Médico.');
+    }
+
+    $pdo->commit();
 
     header("location: ../../src/listagem_funcionarios.php");
     exit();

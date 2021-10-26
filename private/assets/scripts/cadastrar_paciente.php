@@ -15,25 +15,37 @@ $altura = $_POST['inputAltura'] ?? '';
 $tipoSanguineo = $_POST['inputTipoSanguineo'] ?? '';
 
 try {
+    $pdo->beginTransaction();
+    
     $sqlPessoa = <<<SQL
     INSERT INTO Pessoa (nome, sexo, email, telefone, cep, logradouro, cidade, estado)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?)
     SQL;
 
-    $sqlPaciente = <<<SQL
-    INSERT INTO Paciente (peso, altura, tipoSanguineo)
-    VALUES (?, ?, ?)
-    SQL;
-
-    $stm = $pdo->prepare($sqlPessoa);
-    $stm->execute([
+    $stmt = $pdo->prepare($sqlPessoa);
+    $result1 = $stmt->execute([
         $nome, $sexo, $email,
         $telefone, $cep, $logradouro,
         $cidade, $estado
     ]);
+    if(!$result1) {
+        throw new Exception('Falha na operação em Pessoa.');
+    }
+    
+    $lastInsertedId = $pdo->lastInsertedId();
 
-    $stm = $pdo->prepare($sqlPaciente);
-    $stm->execute([$peso, $altura, $tipoSanguineo]);
+    $sqlPaciente = <<<SQL
+    INSERT INTO Paciente (codigo, peso, altura, tipoSanguineo)
+    VALUES (?, ?, ?, ?)
+    SQL;
+   
+    $stmt = $pdo->prepare($sqlPaciente);
+    $result2 = $stmt->execute([$lastInsertedId, $peso, $altura, $tipoSanguineo]);
+    if(!$result2) {
+        throw new Exception('Falha na operação em Paciente.');
+    }
+
+    $pdo->commit();
 
     header("location: ../../src/listagem_pacientes.php");
     exit();
