@@ -1,9 +1,12 @@
 <?php
+require '../../public/src/assets/script/auth.php';
 require '../../connection.php';
 
 $pdo = mysqlConnect();
+session_start();
+exitWhenNotLogged($pdo);
 
-$codigoMedico = $_GET['codigoMedico'] ?? '';
+$medico = $_SESSION['medico'];
 
 try {
     $sql = <<<SQL
@@ -13,7 +16,7 @@ try {
     SQL;
 
     $stmt = $pdo->prepare($sql);
-    $stmt->execute([$codigoMedico]);
+    $stmt->execute([$medico]);
     
 } catch (Exception $e) {
     exit('Ocorreu uma falha ao listar os agendamentos: ' . $e->getMessage());
@@ -70,10 +73,12 @@ try {
         <a class="p-2 text-dark" href="listagem_agendamentos.php"
           >Listar Agendamentos</a
         >
-        <a class="p-2 text-dark" href="listagem_meus_agendamentos.html"
-          >Listar Meus Agendamentos</a
-        >
-        <!-- só aparece para médicos-->
+        <?php
+        if($medico){
+          echo '<a class="p-2 text-dark" href="listagem_meus_agendamentos.php"
+                >Listar Meus Agendamentos</a> ';
+        }
+        ?>
       </nav>
     </div>
 
@@ -92,22 +97,30 @@ try {
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <th scope="row">1</th>
-          <td>19/10/2021</td>
-          <td>13:30</td>
-          <td>Murilo Medeiros do Valle</td>
-          <td>M</td>
-          <td>muthmedeiros@gmail.com</td>
-        </tr>
-        <tr>
-          <th scope="row">2</th>
-          <td>19/10/2021</td>
-          <td>13:30</td>
-          <td>Murilo Medeiros do Valle</td>
-          <td>M</td>
-          <td>muthmedeiros@gmail.com</td>
-        </tr>
+      <?php
+        while($row = $stmt->fetch()){
+          $rowNumber = htmlspecialchars($row['codigo']);
+          $data = htmlspecialchars($row['data']);
+          $horario = htmlspecialchars($row['horario']);
+          $nome = htmlspecialchars($row['nome']);
+          $sexo = htmlspecialchars($row['sexo']);
+          $email = htmlspecialchars($row['email']);
+          $codigoMedico = htmlspecialchars($row['codigoMedico']);
+          
+          echo <<<HTML
+            <tr>
+            <th scope="row">$rowNumber</th>
+            <td>$data</td>
+            <td>$horario</td>
+            <td>$nome</td>
+            <td>$sexo</td>
+            <td>$email</td>
+            <td>$codigoMedico</td>
+            
+          </tr>
+          HTML;
+        }
+        ?>
       </tbody>
     </table>
     <script

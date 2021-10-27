@@ -47,7 +47,7 @@
               </li>
 
               <li class="nav-item">
-                <a class="nav-link" href="agenda.html">Agenda</a>
+                <a class="nav-link" href="agenda.php">Agenda</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="login.html">Login</a>
@@ -60,10 +60,10 @@
         </nav>
       </div>
 
-      <form action="./assets/script/endereco.php" method="POST">
+      <form action="assets/script/endereco.php" method="POST">
         <div class="row">
           <div class="form-floating col-lg-12">
-            <div class="form-floating col-md-12">
+            <div class="form-floating col-md-12 py-2">
               <input
                 type="text"
                 class="form-control"
@@ -72,7 +72,7 @@
               />
               <label for="inputCEP" class="form-label">CEP</label>
             </div>
-            <div class="form-floating col-md-12">
+            <div class="form-floating col-md-12 py-2">
               <input
                 type="text"
                 class="form-control"
@@ -81,7 +81,7 @@
               />
               <label for="inputEstado" class="form-label">Estado</label>
             </div>
-            <div class="form-floating col-md-12">
+            <div class="form-floating col-md-12 py-2">
               <input
                 type="text"
                 class="form-control"
@@ -90,7 +90,7 @@
               />
               <label for="inputLogradouro" class="form-label">Logradouro</label>
             </div>
-            <div class="form-floating col-md-12">
+            <div class="form-floating col-md-12 py-2">
               <input
                 type="text"
                 class="form-control"
@@ -132,13 +132,5 @@
       integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
       crossorigin="anonymous"
     ></script>
-    <script src="../../assets/js/busca_endereco.js"></script>
-    <script>
-      var inputCep = document.getElementById("inputCEP");
-
-      window.onload = () => {
-        inputCep.onkeyup = () => buscaEndereco(inputCep.value, "../../assets/script/busca_endereco.php?cep=");
-      };
-    </script>
   </body>
 </html>

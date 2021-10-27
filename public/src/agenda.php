@@ -1,3 +1,31 @@
+<?php
+require '../../connection.php';
+
+$pdo = mysqlConnect();
+
+try {
+    $sql = <<<SQL
+    SELECT DISTINCT especialidade
+    FROM Medico
+    SQL;
+
+    $especialidades = $pdo->query($sql);
+} catch (Exception $e) {
+    exit('Ocorreu uma falha ao listar os agendamentos: ' . $e->getMessage());
+}
+
+try {
+  $sql = <<<SQL
+  SELECT PE.nome
+  FROM Medico AS ME, Pessoa AS PE
+  WHERE ME.codigo = PE.codigo
+  SQL;
+
+  $medicos = $pdo->query($sql);
+} catch (Exception $e) {
+  exit('Ocorreu uma falha ao listar os agendamentos: ' . $e->getMessage());
+}
+?>
 <!DOCTYPE html>
 <html lang="pt-BR">
   <head>
@@ -47,7 +75,7 @@
               </li>
 
               <li class="nav-item">
-                <a class="nav-link" href="agenda.html">Agenda</a>
+                <a class="nav-link" href="agenda.php">Agenda</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="login.html">Login</a>
@@ -61,7 +89,7 @@
       </div>
 
       <form
-        action="./assets/script/agenda.php"
+        action="assets/script/agenda.php"
         method="GET"
         class="form-control mb-3"
       >
@@ -71,10 +99,15 @@
           >
           <select class="form-control" name="especialidade" id="especialidade">
             <option value="">Especialidades</option>
-            <option value="Cardiologista">Cardiologista</option>
-            <option value="Odontologista">Odontologista</option>
-            <option value="Nutricionista">Nutricionista</option>
-            <option value="Fisioterapeuta">Fisioterapeuta</option>
+            <?php
+            while($row = $especialidades->fetch()){
+              $especialidade = htmlspecialchars($row['especialidade']);
+
+              echo <<<HTML
+                <option value="Cardiologista">$especialidade</option>
+              HTML;
+            }
+            ?>
           </select>
         </div>
 
@@ -84,10 +117,15 @@
           >
           <select class="form-control" name="medico" id="medico">
             <option value="">Escolha o Medico</option>
-            <option value="Joao">Dr. João</option>
-            <option value="Pedro">Dr. Pedro</option>
-            <option value="Luiz">Dr. Luiz</option>
-            <option value="Paulo">Dr. Paulo</option>
+            <?php
+            while($row = $medicos->fetch()){
+              $medico = htmlspecialchars($row['nome']);
+
+              echo <<<HTML
+                <option value="João Antonio da Silva">$medico</option>
+              HTML;
+            }
+            ?>
           </select>
         </div>
 
@@ -120,7 +158,7 @@
         </div>
 
         <div class="mb-3">
-          <label for="" class="form-label">nome</label>
+          <label for="" class="form-label">Nome</label>
           <input
             type="text"
             class="form-control"
@@ -155,7 +193,6 @@
       </form>
     </div>
 
-    <script src="./assets/js/agenda.js"></script>
     <script
       src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
       integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"

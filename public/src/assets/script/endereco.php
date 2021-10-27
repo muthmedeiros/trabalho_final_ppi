@@ -1,4 +1,4 @@
-  <?php
+<?php
 
 require_once "../../../../connection.php";
 
@@ -26,13 +26,14 @@ require_once "../../../../connection.php";
 
     try {
       $sql = <<<SQL
-INSERT INTO BaseDeEnderecoAjax (cep, logradouro, cidade, estado)
-VALUES (?,?,?,?)
-SQL;
+      INSERT INTO BaseDeEnderecoAjax (cep, logradouro, cidade, estado)
+      VALUES (?,?,?,?)
+      SQL;
 
       $stmt = $pdo->prepare($sql);
       $stmt->execute([$cep, $logradouro, $cidade, $estado]);
-      header("location: ../index.html");
+      
+      header("location: ../../../index.html");
       exit();
     } catch (Exception $e) {
       //error_log($e->getMessage(), 3, 'log.php');

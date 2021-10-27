@@ -47,7 +47,7 @@
               </li>
 
               <li class="nav-item">
-                <a class="nav-link" href="agenda.html">Agenda</a>
+                <a class="nav-link" href="agenda.php">Agenda</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="login.html">Login</a>
@@ -80,7 +80,7 @@
             placeholder="Senha"
           />
           <span id="errorMessage"><p>Senha ou Usuarios Invalidos</p></span>
-          <button class="btn btn-danger" type="button" id="buttonLogin">
+          <button class="btn btn-danger mt-2" type="button" id="buttonLogin">
             Entrar
           </button>
         </form>
@@ -104,7 +104,7 @@
           try {
             var response = JSON.parse(xhr.responseText);
           } catch (e) {
-            console.error("String JSON inválida: " + xhr.responseText);
+            console.log("String JSON inválida: " + xhr.responseText);
             return;
           }
 

@@ -1,9 +1,14 @@
 <?php
+require '../../public/src/assets/script/auth.php';
 require '../../connection.php';
+
 $pdo = mysqlConnect();
+session_start();
+exitWhenNotLogged($pdo);
+
+$medico = $_SESSION['medico'];
 
 ?>
-
 <!DOCTYPE html>
 <html lang="pt-BR">
   <head>
@@ -53,10 +58,12 @@ $pdo = mysqlConnect();
         <a class="p-2 text-dark" href="listagem_agendamentos.php"
           >Listar Agendamentos</a
         >
-        <a class="p-2 text-dark" href="listagem_meus_agendamentos.html"
-          >Listar Meus Agendamentos</a
-        >
-        <!-- só aparece para médicos-->
+        <?php
+        if($medico){
+          echo '<a class="p-2 text-dark" href="listagem_meus_agendamentos.php"
+                >Listar Meus Agendamentos</a> ';
+        }
+        ?>
       </nav>
     </div>
 
