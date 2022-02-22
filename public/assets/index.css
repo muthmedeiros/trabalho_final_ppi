@@ -1,0 +1,27 @@
+body {
+    background-color: rgba(224, 224, 224, 0.842);
+}
+
+.sobre-nos {
+    margin-top: 60px;
+}
+
+.valores {
+    margin-top: 60px;
+    margin-bottom: 30px;
+}
+
+footer {
+    background-color: black;
+    text-align: center;
+    color: white;
+}
+
+p {
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+.valores p {
+    font-family: sans-serif;
+    text-align: center;
+}

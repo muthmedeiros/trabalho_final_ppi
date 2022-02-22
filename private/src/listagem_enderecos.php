@@ -1,5 +1,26 @@
+<?php
+require '../../public/src/assets/script/auth.php';
+require '../../connection.php';
+
+$pdo = mysqlConnect();
+session_start();
+exitWhenNotLogged($pdo);
+
+$medico = $_SESSION['medico'];
+
+try {
+    $sql = <<<SQL
+    SELECT cep, logradouro, cidade, estado
+    FROM BaseDeEnderecoAjax
+    SQL;
+
+    $stmt = $pdo->query($sql);
+} catch (Exception $e) {
+    exit('Ocorreu uma falha ao listar os endereços: ' . $e->getMessage());
+}
+?>
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR"> 
   <head>
     <meta charset="UTF-8" />
     <meta
@@ -14,7 +35,6 @@
       integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
       crossorigin="anonymous"
     />
-    <link rel="stylesheet" href="style.css" />
   </head>
   <body>
     <div
@@ -32,21 +52,30 @@
     >
       <h5 class="my-0 mr-md-auto font-weight-normal">Clínica RNM</h5>
       <nav class="my-2 my-md-0 mr-md-3">
-        <a class="p-2 text-dark" href="#">Novo Funcionário</a>
-        <a class="p-2 text-dark" href="#">Novo Paciente</a>
-        <a class="p-2 text-dark" href="/listagem_pacientes/"
+        <a class="p-2 text-dark" href="novo_funcionario.php"
+          >Novo Funcionário</a
+        >
+        <a class="p-2 text-dark" href="novo_paciente.php"
+          >Novo Paciente</a
+        >
+        <a class="p-2 text-dark" href="listagem_funcionarios.php"
+          >Listar Funcionários</a
+        >
+        <a class="p-2 text-dark" href="listagem_pacientes.php"
           >Listar Pacientes</a
         >
-        <a class="p-2 text-dark" href="/listagem_enderecos/index.html"
+        <a class="p-2 text-dark" href="listagem_enderecos.php"
           >Listar Endereços</a
         >
-        <a class="p-2 text-dark" href="/listagem_agendamentos/index.html"
+        <a class="p-2 text-dark" href="listagem_agendamentos.php"
           >Listar Agendamentos</a
         >
-        <a class="p-2 text-dark" href="/listagem_meus_agendamentos/index.html"
-          >Listar Meus Agendamentos</a
-        >
-        <!-- só aparece para médicos-->
+        <?php
+        if($medico){
+          echo '<a class="p-2 text-dark" href="listagem_meus_agendamentos.php"
+                >Listar Meus Agendamentos</a> ';
+        }
+        ?>
       </nav>
     </div>
 
@@ -64,20 +93,27 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <th scope="row">1</th>
-          <td>92846781</td>
-          <td>Praça das Cruzes, 287, Santa Mônica</td>
-          <td>Uberlândia</td>
-          <td>Minas Gerais</td>
-        </tr>
-        <tr>
-          <th scope="row">2</th>
-          <td>92846781</td>
-          <td>Praça das Cruzes, 287, Santa Mônica</td>
-          <td>Uberlândia</td>
-          <td>Minas Gerais</td>
-        </tr>
+        <?php
+        $rowNumber = 1;
+        while($row = $stmt->fetch()){
+          $cep = htmlspecialchars($row['cep']);
+          $logradouro = htmlspecialchars($row['logradouro']);
+          $cidade = htmlspecialchars($row['cidade']);
+          $estado = htmlspecialchars($row['estado']);
+
+          echo <<<HTML
+            <tr>
+            <th scope="row">$rowNumber</th>
+            <td>$cep</td>
+            <td>$logradouro</td>
+            <td>$cidade</td>
+            <td>$estado</td>
+          </tr>
+          HTML;
+
+          $rowNumber++;
+        }
+        ?>
       </tbody>
     </table>
     <script

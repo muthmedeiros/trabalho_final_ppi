@@ -1,3 +1,24 @@
+<?php
+require '../../public/src/assets/script/auth.php';
+require '../../connection.php';
+
+$pdo = mysqlConnect();
+session_start();
+exitWhenNotLogged($pdo);
+
+$medico = $_SESSION['medico'];
+
+try {
+    $sql = <<<SQL
+    SELECT codigo, data, horario, nome, sexo, email, codigoMedico
+    FROM Agenda
+    SQL;
+
+    $stmt = $pdo->query($sql);
+} catch (Exception $e) {
+    exit('Ocorreu uma falha ao listar os agendamentos: ' . $e->getMessage());
+}
+?>
 <!DOCTYPE html>
 <html lang="pt-BR">
   <head>
@@ -14,7 +35,6 @@
       integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
       crossorigin="anonymous"
     />
-    <link rel="stylesheet" href="style.css" />
   </head>
   <body>
     <div
@@ -32,21 +52,30 @@
     >
       <h5 class="my-0 mr-md-auto font-weight-normal">Clínica RNM</h5>
       <nav class="my-2 my-md-0 mr-md-3">
-        <a class="p-2 text-dark" href="#">Novo Funcionário</a>
-        <a class="p-2 text-dark" href="#">Novo Paciente</a>
-        <a class="p-2 text-dark" href="/listagem_pacientes/"
+        <a class="p-2 text-dark" href="novo_funcionario.php"
+          >Novo Funcionário</a
+        >
+        <a class="p-2 text-dark" href="novo_paciente.php"
+          >Novo Paciente</a
+        >
+        <a class="p-2 text-dark" href="listagem_funcionarios.php"
+          >Listar Funcionários</a
+        >
+        <a class="p-2 text-dark" href="listagem_pacientes.php"
           >Listar Pacientes</a
         >
-        <a class="p-2 text-dark" href="/listagem_enderecos/index.html"
+        <a class="p-2 text-dark" href="listagem_enderecos.php"
           >Listar Endereços</a
         >
-        <a class="p-2 text-dark" href="/listagem_agendamentos/index.html"
+        <a class="p-2 text-dark" href="listagem_agendamentos.php"
           >Listar Agendamentos</a
         >
-        <a class="p-2 text-dark" href="/listagem_meus_agendamentos/index.html"
-          >Listar Meus Agendamentos</a
-        >
-        <!-- só aparece para médicos-->
+        <?php
+        if($medico){
+          echo '<a class="p-2 text-dark" href="listagem_meus_agendamentos.php"
+                >Listar Meus Agendamentos</a> ';
+        }
+        ?>
       </nav>
     </div>
 
@@ -66,24 +95,30 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <th scope="row">1</th>
-          <td>19/10/2021</td>
-          <td>13:30</td>
-          <td>Murilo Medeiros do Valle</td>
-          <td>M</td>
-          <td>muthmedeiros@gmail.com</td>
-          <td>111</td>
-        </tr>
-        <tr>
-          <th scope="row">2</th>
-          <td>19/10/2021</td>
-          <td>13:30</td>
-          <td>Murilo Medeiros do Valle</td>
-          <td>M</td>
-          <td>muthmedeiros@gmail.com</td>
-          <td>222</td>
-        </tr>
+      <?php
+        while($row = $stmt->fetch()){
+          $rowNumber = htmlspecialchars($row['codigo']);;
+          $data = htmlspecialchars($row['data']);
+          $horario = htmlspecialchars($row['horario']);
+          $nome = htmlspecialchars($row['nome']);
+          $sexo = htmlspecialchars($row['sexo']);
+          $email = htmlspecialchars($row['email']);
+          $codigoMedico = htmlspecialchars($row['codigoMedico']);
+          
+          echo <<<HTML
+            <tr>
+            <th scope="row">$rowNumber</th>
+            <td>$data</td>
+            <td>$horario</td>
+            <td>$nome</td>
+            <td>$sexo</td>
+            <td>$email</td>
+            <td>$codigoMedico</td>
+            
+          </tr>
+          HTML;
+        }
+        ?>
       </tbody>
     </table>
     <script
